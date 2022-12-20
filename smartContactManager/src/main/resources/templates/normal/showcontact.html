@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})" >
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+	<section>
+		<div class="card1 mr-3 ml-3">
+			<div class="card-body">
+				<div class="text-center">My Contacts</div>
+				
+				<div class="search-container my-4">
+				
+				<input onkeyup="search()" id="search-input" TYPE="text" class="form-control" placeholder="search your contacts" />
+				
+					<div class="search-result">
+						
+						
+					</div>
+				</div>
+				<div class="table-responsive">
+				<table class="table table-dark">
+					  <thead>
+					    <tr>
+					      <th scope="col">#ID</th>
+					      <th scope="col">First</th>
+					      <th scope="col">Last</th>
+					      <th scope="col">Email</th>
+					      <th scope="col">Phone Number</th>
+					      <th scope="col">Action</th>					      
+					    </tr>
+					  </thead>
+					  <tbody>
+					  
+					    <tr th:each="c:${contacts}">
+					      <th scope="row" th:text="${c.cid}"></th>
+					     <td >
+					     <img alt="profile photo" class="my_profile_picture" th:src="@{'/image/'+${c.image}}" src="">
+					     <span th:text="${c.name}"> </span></td>
+					     
+					      <td th:text="${c.secondName}"></td>
+					      <td >
+					      <a th:href="@{'/user/'+${c.cid}+'/contact'}">
+					      <span th:text="${c.email}"></span>
+					      </a>
+					      </td>
+					      <td th:text="${c.phone}"></td>
+					      <td>
+					  <a href="#" th:onclick="|deleteContact(${c.cid})|" class="btn btn-danger btn-sm" >Delete</a>
+					       <form method="post" th:action="@{'/user/update-contact/'+${c.cid}}">
+					       	<button type="submit" class="btn btn-primary btn-sm" >Update</button>
+					      	</form>
+					      </td>
+					    </tr>
+					    
+					  </tbody>
+					</table>
+					</div>
+			</div>
+		</div>
+		<nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			    <li th:if="${currentpage!=0}" class="page-item"><a th:href="@{${currentpage-1}}" class="page-link" href="#">Previous</a></li>
+			    <li th:classappend="${currentpage==i-1?'active':''}" th:each="i  : ${#numbers.sequence(1,totalpages)}" class="page-item"><a th:href="@{'/user/show-contacts/'+${i-1}}" class="page-link" href="#"><span th:text=${i}></span></a></li>
+			   
+			    <li th:if="${currentpage+1!=totalpages}" class="page-item"><a th:href="@{${currentpage+1}}" class="page-link" href="#">Next</a></li>
+			  </ul>
+			</nav>
+	</section>
+</body>
+</html>
